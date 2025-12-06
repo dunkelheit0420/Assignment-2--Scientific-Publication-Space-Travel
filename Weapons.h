@@ -25,6 +25,8 @@ public:
 	double FireLasers(double time);
 	void AddTorpedoes(int numTorpedoes);
 	void AddLasers(int numLasers);
+	int GetNumTorpedoes() const;
+	int GetNumLasers() const;
 	void Report() const;
 };
 

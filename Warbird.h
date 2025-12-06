@@ -30,7 +30,7 @@ public:
 			double massWorkstations,
 			int numTorpedoes1,
 			int numLasers1);
-	bool ChangeSpeed(double speed);
+	bool ChangeSpeed(double deltaSpeed);
 	void Travel(double time, double light);
 	bool FireTorpedo(int numTorpedoes);
 	bool FireLaser(double time);

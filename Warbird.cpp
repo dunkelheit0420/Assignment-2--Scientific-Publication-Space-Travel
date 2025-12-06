@@ -30,14 +30,19 @@ Warbird::Warbird(double fuel,
 	  weapon1(numTorpedoes, numLasers),
 	  weapon2(numTorpedoes, numLasers){}
 
-bool Warbird::ChangeSpeed(double speed) {
+bool Warbird::ChangeSpeed(double deltaSpeed) {
 	bool ret = false;
 	double energyRequired = 0.0;
-	if (speed >= 0.0) {
-		energyRequired = (0.5 * payload.GetTotalMass() * speed * speed);
+	// Increment current speed with the change in speed
+	// Allow for negative values for deceleration
+	speed += deltaSpeed;
+	// We're going to check for negative overall speed and 
+	// set this value to 0.0 instead
+	if (speed < 0.0) speed = 0.0;
+	else {
+		energyRequired = (0.5 * payload.GetTotalMass() * deltaSpeed * deltaSpeed);
 		// Split the energy required into the two propulsion systems
 		if (propulsion1.ConsumeFuel(energyRequired / 2.0) && propulsion2.ConsumeFuel(energyRequired / 2.0)) {
-			this->speed = speed;
 			ret = true;
 		}
 	}
@@ -55,10 +60,27 @@ void Warbird::Travel(double time, double light) {
 }
 
 bool Warbird::FireTorpedo(int numTorpedoes) {
-	bool ret = false;
-	// FireTorpedoes already checks for time
-	if (weapon1.FireTorpedoes(numTorpedoes) || weapon2.FireTorpedoes(numTorpedoes)) ret = true;
-	return ret;
+	bool ret1 = false;
+	bool ret2 = false;
+	if (numTorpedoes >= 0) {
+		// Check for odd amount of numTorpedoes
+		int remainder = 0;
+		int halfNumTorpedoes = 0;
+		remainder = numTorpedoes % 2;
+		halfNumTorpedoes = numTorpedoes / 2;
+		// Try to balance the amount of torpedoes fired:
+		if (weapon1.GetNumTorpedoes() >= weapon2.GetNumTorpedoes()) {
+			ret1 = weapon1.FireTorpedoes(halfNumTorpedoes + remainder);
+			ret2 = weapon2.FireTorpedoes(halfNumTorpedoes);
+		}
+		else {
+			ret1 = weapon1.FireTorpedoes(halfNumTorpedoes);
+			ret2 = weapon2.FireTorpedoes(halfNumTorpedoes + remainder);
+		}
+	}
+	// Return true only if both weapon systems are able to fire
+	// which ensures total numTorpedoes are fired
+	return ret1 && ret2;
 }
 
 bool Warbird::FireLaser(double time) {
@@ -78,10 +100,11 @@ bool Warbird::FireLaser(double time) {
 void Warbird::GenerateReport() {
 	cout.setf(ios::fixed); 
 	cout.precision(2);
-	cout << "The war bird is travelling at " << speed << " km/s and has travelled " << distance << " m." << endl;
+	cout << "The warbird is travelling at " << speed << " m/s and has travelled " << distance << " m." << endl;
 	propulsion1.Report();
 	propulsion2.Report();
 	payload.Report();
 	weapon1.Report();
 	weapon2.Report();
+	cout << endl;
 }

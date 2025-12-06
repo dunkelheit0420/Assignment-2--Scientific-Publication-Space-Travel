@@ -76,6 +76,14 @@ void Weapons::AddLasers(int numLasers) {
 	}
 }
 
+int Weapons::GetNumTorpedoes() const {
+	return numTorpedoes;
+}
+
+int Weapons::GetNumLasers() const {
+	return numLasers;
+}
+
 void Weapons::Report() const {
 	cout.precision(2);
 	cout.setf(ios::fixed);

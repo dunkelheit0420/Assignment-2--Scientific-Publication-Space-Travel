@@ -27,13 +27,14 @@ Starship::Starship(double fuel,
 	payload1(massPassengers, massCargo, massWorkstations),
 	weapon1(numTorpedoes, numLasers) {}
 
-bool Starship::ChangeSpeed(double speed) {
+bool Starship::ChangeSpeed(double deltaSpeed) {
 	bool ret = false;
 	double energyRequired = 0.0;
-	if (speed >= 0.0) {
-		energyRequired = 0.5 * payload1.GetTotalMass() * (speed * speed);
+	speed += deltaSpeed;
+	if (speed < 0.0) speed = 0.0;
+	else {
+		energyRequired = 0.5 * payload1.GetTotalMass() * (deltaSpeed * deltaSpeed);
 		if (propulsion1.ConsumeFuel(energyRequired)) {
-			this->speed = speed;
 			ret = true;
 		}
 	}
@@ -67,8 +68,9 @@ bool Starship::FireLaser(double time) {
 void Starship::GenerateReport() {
 	cout.precision(2);
 	cout.setf(ios::fixed);
-	cout << "The starship is travelling at " << speed << "m/s and has travelled " << distance << " m." << endl;
+	cout << "The starship is travelling at " << speed << " m/s and has travelled " << distance << " m." << endl;
 	propulsion1.Report();
 	payload1.Report();
 	weapon1.Report();
+	cout << endl;
 }
