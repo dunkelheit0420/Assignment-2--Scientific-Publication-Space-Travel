@@ -7,6 +7,7 @@
 
 //	Task Log
 //	4-Dec-25		D. Gonzales		Created Propulsion.cpp file, finished the function definitions
+//	6-Dec-25		D. Gonzales		Updated functions, fixed bugs
 
 #include "Propulsion.h"
 #include <iostream>
@@ -19,8 +20,12 @@ Propulsion::Propulsion() {
 }
 
 Propulsion::Propulsion(double fuel, double light) {
-	if (fuel >= 0 && fuel <= MAX_FUEL) this->fuel = fuel;
-	if (light >= 0.0 && light < 1.0) this->light = light;
+	if (fuel >= 0.0 && fuel <= MAX_FUEL) this->fuel = fuel;
+	else if (fuel > MAX_FUEL) this->fuel = MAX_FUEL;
+	else this->fuel = 0.0;
+	if (light >= 0.0 && light <= 1.0) this->light = light;
+	else if (light > 1.0) this->light = 1.0;
+	else this->light = 0.0;
 }
 
 double Propulsion::LightToFuel(double time) { 

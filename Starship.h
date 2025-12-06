@@ -32,8 +32,8 @@ public:
 		int numLasers);
 	bool ChangeSpeed(double speed);
 	void Travel(double time, double light);
-	bool FireTorpedoes(int numTorpedoes);
-	bool FireLasers(double time);
+	bool FireTorpedo(int numTorpedoes);
+	bool FireLaser(double time);
 	void GenerateReport();
 };
 

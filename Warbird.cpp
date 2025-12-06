@@ -7,6 +7,8 @@
 
 //	Task Log
 //	4-Dec-25		D. Gonzales		Created Warbird.cpp file, finished the function definitions
+//	5-Dec-25		D. Gonzales		Updated some function definitions, fixed bugs in logic
+//	6-Dec-25		D. Gonzales		Added an initializer list, finished writing comments, fixing bugs.
 
 #include "Warbird.h"
 #include <iostream>
@@ -19,51 +21,64 @@ Warbird::Warbird(double fuel,
 		double massCargo,
 		double massWorkstations,
 		int numTorpedoes,
-		int numLasers) {
-	speed = 0.0;
-	distance = 0.0;
-	Propulsion propulsion1(fuel, light), propulsion2(fuel, light);
-	Payload payload(massPassengers, massCargo, massWorkstations);
-	Weapons weapon1(numTorpedoes, numLasers), weapon2(numTorpedoes, numLasers);
-}
+		int numLasers)
+	: speed(0.0),
+	  distance(0.0),
+	  propulsion1(fuel, light),
+	  propulsion2(fuel, light),
+	  payload(massPassengers, massCargo, massWorkstations),
+	  weapon1(numTorpedoes, numLasers),
+	  weapon2(numTorpedoes, numLasers){}
 
 bool Warbird::ChangeSpeed(double speed) {
 	bool ret = false;
 	double energyRequired = 0.0;
-	double totalMass = 0.0;
-	if (speed >= 0) {
-		totalMass = payload.GetMassPassengers() + payload.GetMassCargo() + payload.GetMassWorkstations();
+	if (speed >= 0.0) {
+		energyRequired = (0.5 * payload.GetTotalMass() * speed * speed);
+		// Split the energy required into the two propulsion systems
+		if (propulsion1.ConsumeFuel(energyRequired / 2.0) && propulsion2.ConsumeFuel(energyRequired / 2.0)) {
+			this->speed = speed;
+			ret = true;
+		}
 	}
-	energyRequired = (0.5 * totalMass * speed * speed);
-	if (propulsion1.ConsumeFuel(energyRequired) && propulsion2.ConsumeFuel(energyRequired)) ret = true;
 	return ret;
 }
 
 void Warbird::Travel(double time, double light) {
-	if (light >= 0.0 && light < 1.0 && time >= 0) {
+	if (light >= 0.0 && light <= 1.0 && time >= 0) {
 		propulsion1.SetLightLevel(light);
 		propulsion2.SetLightLevel(light);
 		propulsion1.GenerateFuel(time);
 		propulsion2.GenerateFuel(time);
+		distance = distance + speed * time;
 	}
 }
 
 bool Warbird::FireTorpedo(int numTorpedoes) {
 	bool ret = false;
-	if (weapon1.FireTorpedoes(numTorpedoes) && weapon2.FireTorpedoes(numTorpedoes)) ret = true;
+	// FireTorpedoes already checks for time
+	if (weapon1.FireTorpedoes(numTorpedoes) || weapon2.FireTorpedoes(numTorpedoes)) ret = true;
 	return ret;
 }
 
 bool Warbird::FireLaser(double time) {
 	bool ret = false;
-	if (weapon1.FireLasers(time) && weapon2.FireLasers(time)) ret = true;
+	double energyRequired1 = 0.0;
+	double energyRequired2 = 0.0;
+	// No need to check for time > 0 because FireLasers already handles this
+	// and will return 0.0 energy required for negative time
+	energyRequired1 = weapon1.FireLasers(time);
+	energyRequired2 = weapon2.FireLasers(time);
+	// Optionally we can have || instead of && so that in case one of the propulsion
+	// system/weapon system doesn't work, the other one will still try to fire.
+	if (propulsion1.ConsumeFuel(energyRequired1) && propulsion2.ConsumeFuel(energyRequired2)) ret = true;
 	return ret;
 }
 
 void Warbird::GenerateReport() {
+	cout.setf(ios::fixed); 
 	cout.precision(2);
-	cout.setf(ios::fixed);
-	cout << "The war bird is travelling at " << speed << " m / s and has travelled " << distance << " m." << endl;
+	cout << "The war bird is travelling at " << speed << " km/s and has travelled " << distance << " m." << endl;
 	propulsion1.Report();
 	propulsion2.Report();
 	payload.Report();

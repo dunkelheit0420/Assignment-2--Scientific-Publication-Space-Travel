@@ -22,6 +22,10 @@ public:
 	double GetMassPassengers() const;
 	double GetMassCargo() const;
 	double GetMassWorkstations() const;
+	double GetTotalMass() const;
+	void AddPassengers(double massPassengers);
+	void AddCargo(double massCargo);
+	void AddWorkstations(double massWorkstations);
 	void Report() const;
 };
 

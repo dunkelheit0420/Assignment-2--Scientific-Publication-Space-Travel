@@ -7,6 +7,7 @@
 
 //	Task Log
 //	4-Dec-25		S.Symonette		Created Payload.cpp file, finished the function definitions
+//	6-Dec-25		S.Symonette		Added some functions, fixed bugs
 
 #include "Payload.h"
 #include <iostream>
@@ -40,6 +41,22 @@ double Payload::GetMassCargo() const {
 
 double Payload::GetMassWorkstations() const {
 	return massWorkstations;
+}
+
+double Payload::GetTotalMass() const {
+	return massPassengers + massCargo + massWorkstations;
+}
+
+void Payload::AddPassengers(double massPassengers){
+	this->massPassengers += massPassengers;
+}
+
+void Payload::AddCargo(double massCargo) {
+	this->massCargo += massCargo;
+}
+
+void Payload::AddWorkstations(double massWorkstations) {
+	this->massWorkstations += massWorkstations;
 }
 
 void Payload::Report() const {

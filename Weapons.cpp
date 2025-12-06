@@ -7,6 +7,7 @@
 
 //	Task Log
 //	4-Dec-25		E. Karaman		Created Weapons.cpp file, finished the function definitions
+//	6-Dec-25		E. Karaman		Updated functions, fixed bugs
 
 #include "Weapons.h"
 #include <iostream>
@@ -57,7 +58,7 @@ void Weapons::AddTorpedoes(int numTorpedoes) {
 	int totalTorpedoes = 0;
 	if (numTorpedoes >= 0) {
 		totalTorpedoes = this->numTorpedoes + numTorpedoes;
-		if (totalTorpedoes < MAX_TORPEDOES) {
+		if (totalTorpedoes <= MAX_TORPEDOES) {
 			this->numTorpedoes = totalTorpedoes;
 		}
 		else this->numTorpedoes = MAX_TORPEDOES;
@@ -68,7 +69,7 @@ void Weapons::AddLasers(int numLasers) {
 	int totalLasers = 0;
 	if (numLasers >= 0) {
 		totalLasers = this->numLasers + numLasers;
-		if (totalLasers < MAX_LASERS) {
+		if (totalLasers <= MAX_LASERS) {
 			this->numLasers = totalLasers;
 		}
 		else this->numLasers = MAX_LASERS;
@@ -78,5 +79,5 @@ void Weapons::AddLasers(int numLasers) {
 void Weapons::Report() const {
 	cout.precision(2);
 	cout.setf(ios::fixed);
-	cout << " Weapon: number of laser cannons: " << numLasers << ", number of torpedoes : " << numTorpedoes << "." << endl;
+	cout << "Weapon: number of laser cannons: " << numLasers << ", number of torpedoes : " << numTorpedoes << "." << endl;
 }
