@@ -16,7 +16,7 @@ int main() {
 	Cargo cargo2(1000, 0.1, 1500000, 7500000, 15000);
 	const double speedOfLight = 299792458.0;
 
-	Accelerate to 0.01 the speed of light
+	//Accelerate to 0.01 the speed of light
 	double velocity = 0.01 * speedOfLight;
 
 	bool ret = warbird.ChangeSpeed(velocity);
@@ -34,7 +34,7 @@ int main() {
 	cargo1.GenerateReport();
 	cargo2.GenerateReport();
 
-	Generate some fuel while travelling
+	//Generate some fuel while travelling
 	warbird.Travel(36000, 0.01);
 	starship.Travel(36000, 0.01);
 	cargo1.Travel(36000, 0.01);
@@ -46,7 +46,7 @@ int main() {
 	cargo1.GenerateReport();
 	cargo2.GenerateReport();
 
-	Accelerate to 0.015 the speed of light
+	//Accelerate to 0.015 the speed of light
 	double changeVelocity = 0.005 * speedOfLight;
 
 	cout << "ACCELERATION REPORT 2:" << endl;
@@ -64,7 +64,7 @@ int main() {
 	cargo1.GenerateReport();
 	cargo2.GenerateReport();
 
-	Generate some fuel while travelling
+	//Generate some fuel while travelling
 	warbird.Travel(36000, 0.01);
 	starship.Travel(36000, 0.01);
 	cargo1.Travel(36000, 0.01);
@@ -76,7 +76,7 @@ int main() {
 	cargo1.GenerateReport();
 	cargo2.GenerateReport();
 
-	Accelerate to 0.02 the speed of light
+	//Accelerate to 0.02 the speed of light
 	changeVelocity = 0.005 * speedOfLight;
 
 	cout << "ACCELERATION REPORT 3:" << endl;
@@ -95,7 +95,7 @@ int main() {
 	cargo2.GenerateReport();
 
 	cout << "COMBAT REPORT 1:" << endl;
-	Fire lasers and torpedoes
+	//Fire lasers and torpedoes
 	ret = warbird.FireLaser(100);
 	if (!ret) cout << "Warbird unable to fire lasers" << endl;
 	warbird.FireTorpedo(10);

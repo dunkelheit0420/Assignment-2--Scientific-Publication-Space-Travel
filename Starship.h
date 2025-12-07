@@ -8,12 +8,12 @@
 //	Task Log
 //	5-Dec-25		S.Symonette		Created Starship.h file, finished the class
 
+#ifndef _STARSHIP_H_
+#define _STARSHIP_H_
+
 #include "Propulsion.h"
 #include "Payload.h"
 #include "Weapons.h"
-
-#ifndef _STARSHIP_H_
-#define _STARSHIP_H_
 
 class Starship {
 private:

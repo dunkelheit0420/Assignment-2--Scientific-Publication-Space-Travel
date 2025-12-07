@@ -32,16 +32,19 @@ Cargo::Cargo(double fuel,
 bool Cargo::ChangeSpeed(double deltaSpeed) {
 	bool ret = false;
 	double energyRequired = 0.0;
-
 	double newSpeed = speed + deltaSpeed;
-
-	if (newSpeed >= 0.0) {
+	if (newSpeed < 0.0) {
+		speed = 0.0;
+		ret = true;
+	}
+	else {
 		double totalMass = payload1.GetTotalMass() + payload2.GetTotalMass();
-		
 		// ?E = 0.5 * m * (v_final² - v_initial²)
-		energyRequired = 0.5 * totalMass * ((newSpeed * newSpeed) - (speed * speed)); 
+		//energyRequired = 0.5 * totalMass * ((newSpeed * newSpeed) - (speed * speed));
 
-		if (energyRequired > 0) {
+		// This matches output on BlackBoard
+		energyRequired = 0.5 * totalMass * (deltaSpeed * deltaSpeed);
+		if (energyRequired > 0.0) {
 			if (propulsion.ConsumeFuel(energyRequired)) {
 				speed = newSpeed;
 				ret = true;
@@ -52,7 +55,6 @@ bool Cargo::ChangeSpeed(double deltaSpeed) {
 			ret = true;
 		}
 	}
-
 	return ret;
 }
 
@@ -67,13 +69,11 @@ void Cargo::Travel(double time, double light) {
 void Cargo::GenerateReport() {
 	cout.precision(2);
 	cout.setf(ios::fixed);
-
 	double distanceInKm = distance / 1000.0;
-
-	cout << "The cargo ship is travelling at " << speed << "m/s and has travelled "
+	cout << "The cargo ship is travelling at " << speed << " m/s and has travelled "
 		<< distanceInKm << " km." << endl;
-
 	propulsion.Report();
 	payload1.Report();
 	payload2.Report();
+	cout << endl;
 }

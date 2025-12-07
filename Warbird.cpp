@@ -35,16 +35,26 @@ bool Warbird::ChangeSpeed(double deltaSpeed) {
 	double energyRequired = 0.0;
 	// Increment current speed with the change in speed
 	// Allow for negative values for deceleration
-	speed += deltaSpeed;
+	double newSpeed = speed + deltaSpeed;
 	// We're going to check for negative overall speed and 
 	// set this value to 0.0 instead
-	if (speed < 0.0) speed = 0.0;
-	else {
-		energyRequired = (0.5 * payload.GetTotalMass() * deltaSpeed * deltaSpeed);
+	if (newSpeed < 0.0) {
+		speed = 0.0;
+		ret = true;
+	}
+	//energyRequired = 0.5 * payload.GetTotalMass() * ((newSpeed * newSpeed) - (speed * speed));
+	// This matches output on BlackBoard
+	energyRequired = 0.5 * payload.GetTotalMass() * (deltaSpeed * deltaSpeed);
+	if (energyRequired > 0.0) {
 		// Split the energy required into the two propulsion systems
 		if (propulsion1.ConsumeFuel(energyRequired / 2.0) && propulsion2.ConsumeFuel(energyRequired / 2.0)) {
+			speed = newSpeed;
 			ret = true;
 		}
+	}
+	else {
+		speed = newSpeed;
+		ret = true;
 	}
 	return ret;
 }

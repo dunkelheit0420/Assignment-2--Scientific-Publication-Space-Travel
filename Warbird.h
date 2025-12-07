@@ -8,12 +8,12 @@
 //	Task Log
 //	4-Dec-25		D. Gonzales		Created Warbird.h file, finished the class
 
+#ifndef _WARBIRD_H_
+#define _WARBIRD_H_
+
 #include "Propulsion.h"
 #include "Payload.h"
 #include "Weapons.h"
-
-#ifndef _WARBIRD_H_
-#define _WARBIRD_H_
 
 class Warbird {
 private:

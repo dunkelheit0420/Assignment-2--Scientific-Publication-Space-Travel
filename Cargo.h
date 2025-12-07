@@ -29,9 +29,12 @@ public:
 		double massPassengers,
 		double massCargo,
 		double massWorkstations)
-		: propulsion(fuel, light), payload1(massPassengers, massCargo, massWorkstations), payload2(), speed(0), distance(0)
+		: propulsion(fuel, light), 
+		payload1(massPassengers, massCargo, massWorkstations), 
+		payload2(massPassengers, massCargo, massWorkstations),
+		speed(0.0), 
+		distance(0.0)
 	{}
-
 	Cargo(double fuel,
 		double light,
 		double massPassengers1,
@@ -40,11 +43,8 @@ public:
 		double massPassengers2,
 		double massCargo2,
 		double massWorkstations2);
-
 	bool ChangeSpeed(double deltaSpeed);
-
 	void Travel(double time, double light);
-
 	void GenerateReport();
 };
 
